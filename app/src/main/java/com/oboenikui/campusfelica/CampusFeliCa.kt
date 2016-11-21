@@ -78,7 +78,7 @@ class CampusFeliCa(private val mTag: Tag) {
 
     inner class CampusFeliCaHistory(val calendar: Calendar, val isPayment: Boolean, val price: Int, val balance: Int)
 
-    inner class CampusFeliCaInformation(val coopId: String, val isMemberId: Boolean, val lastMealDate: Calendar, val mealBalance: Int, val point: Double, val balance: Long)
+    inner class CampusFeliCaInformation(val coopId: String, val isMemberId: Boolean, val lastMealDate: Calendar, val mealUsed: Int, val point: Double, val balance: Long)
 
     companion object {
         val SERVICE_CODE_HISTORY = byteArrayOf(0xcf.toByte(), 0x50.toByte())

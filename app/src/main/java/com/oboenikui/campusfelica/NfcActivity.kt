@@ -236,13 +236,12 @@ open class NfcActivity : AppCompatActivity() {
 
             (findViewById(R.id.point_balance) as TextView).text = getString(R.string.point_format).format(info.point)
 
-            val mealBalanceText = findViewById(R.id.meal_balance) as TextView
-            val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.JAPAN)
+            val mealUsedText = findViewById(R.id.meal_used) as TextView
 
-            if(sdf.format(info.lastMealDate.time) == sdf.format(Date())) {
-                mealBalanceText.text = getString(R.string.meal_card_format).format(toPriceText(info.mealBalance.toLong()))
+            if(System.currentTimeMillis() - info.lastMealDate.timeInMillis < 30L * 24 * 60 * 60 * 1000 ) {
+                mealUsedText.text = getString(R.string.meal_card_format).format(toPriceText(info.mealUsed.toLong()))
             } else {
-                mealBalanceText.visibility = View.GONE
+                mealUsedText.visibility = View.GONE
             }
 
             dialog.dismiss()

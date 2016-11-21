@@ -14,8 +14,8 @@
     <string name="dont_move">カードを動かさないで下さい</string>
     <string name="open_source_license">ライセンス</string>
     <string name="error">エラー</string>
-    <string name="meal_card_format">本日のミールカード残高：%s</string>
+    <string name="meal_card_format">本日のミールカード利用額：%s</string>
     <string name="point_format">%.1fpt</string>
     <string name="member_no">組合員No.\n%s</string>
-    <string name="manage_no">電子マネー管理番号\\n%s</string>
+    <string name="manage_no">電子マネー管理番号\n%s</string>
 </resources>
