@@ -1,12 +1,10 @@
 package com.oboenikui.campusfelica
 
+import android.nfc.Tag
 import java.io.ByteArrayOutputStream
 import java.io.IOException
-import java.util.ArrayList
-import java.util.Calendar
-
-import android.nfc.Tag
-import android.util.Log
+import java.math.BigInteger
+import java.util.*
 
 class CampusFeliCa(private val mTag: Tag) {
 
@@ -57,7 +55,7 @@ class CampusFeliCa(private val mTag: Tag) {
                 cal,
                 toInt(result[35], result[36], result[37]),
                 toInt(result[45], result[46], result[47], result[48])/10.0,
-                (result[64].toLong() shl 24) or (result[63].toLong() shl 16) or (result[62].toLong() shl 8) or result[61].toLong())
+                BigInteger(1, byteArrayOf(result[64], result[63], result[62], result[61])).toLong())
     }
 
     private fun toCampusFeliCaHistories(result: ByteArray?): List<CampusFeliCaHistory> {
