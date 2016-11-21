@@ -54,8 +54,14 @@ class ExecuteNfcF(tag: Tag) : Closeable {
 
         val POLLING_COMMAND = byteArrayOf(0x06.toByte(), 0x00.toByte(), 0xFE.toByte(), 0x00.toByte(), 0x00.toByte(), 0x0F.toByte())
 
+        fun createService(vararg services: ByteArray): ByteArray {
+            if(services.size > 0xff) {
+                throw IndexOutOfBoundsException("Too many services.")
+            }
+            return byteArrayOf(services.size.toByte()) + services.flatMap(ByteArray::asIterable)
+        }
 
-        fun createBlockList(vararg counts: Int): ByteArray {
+        fun createBlock(vararg counts: Int): ByteArray {
             ByteArrayOutputStream().use {
                 it.write(counts.sum())
                 for (i in 0..counts.size-1) {

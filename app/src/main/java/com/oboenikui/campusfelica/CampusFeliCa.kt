@@ -1,33 +1,24 @@
 package com.oboenikui.campusfelica
 
 import android.nfc.Tag
-import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.math.BigInteger
 import java.util.*
+import com.oboenikui.campusfelica.ExecuteNfcF as exNfc
 
 class CampusFeliCa(private val mTag: Tag) {
 
-    fun readHistories(ex: ExecuteNfcF): List<CampusFeliCaHistory> {
-        val stream = ByteArrayOutputStream()
-        stream.write(1)
+    fun readHistories(ex: exNfc): List<CampusFeliCaHistory> {
         try {
-            stream.write(SERVICE_CODE_HISTORY)
-            stream.write(ExecuteNfcF.createBlockList(10))
-            return toCampusFeliCaHistories(ex.executeWithIdm(6, stream.toByteArray()))
+            return toCampusFeliCaHistories(ex.executeWithIdm(6, exNfc.createService(SERVICE_CODE_HISTORY) + exNfc.createBlock(10)))
         } catch (e: IOException) {
             return mutableListOf<CampusFeliCaHistory>()
         }
     }
 
-    fun readBasicInformation(ex: ExecuteNfcF): CampusFeliCaInformation? {
-        val stream = ByteArrayOutputStream()
-        stream.write(2)
+    fun readBasicInformation(ex: exNfc): CampusFeliCaInformation? {
         try {
-            stream.write(SERVICE_CODE_INFORMATION)
-            stream.write(SERVICE_CODE_BALANCE)
-            stream.write(ExecuteNfcF.createBlockList(3, 1))
-            return toCampusFeliCaInformation(ex.executeWithIdm(6, stream.toByteArray()))
+            return toCampusFeliCaInformation(ex.executeWithIdm(6, exNfc.createService(SERVICE_CODE_INFORMATION, SERVICE_CODE_BALANCE) + exNfc.createBlock(3, 1)))
         } catch (e: IOException) {
             return null
         }
@@ -35,7 +26,7 @@ class CampusFeliCa(private val mTag: Tag) {
 
     fun readData(): Pair<CampusFeliCaInformation, List<CampusFeliCaHistory>>? {
         try {
-            ExecuteNfcF(mTag).use {
+            exNfc(mTag).use {
                 it.connect()
                 val info = readBasicInformation(it) ?: return null
                 val histories = readHistories(it)

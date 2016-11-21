@@ -10,7 +10,6 @@ import android.nfc.Tag
 import android.nfc.TagLostException
 import android.nfc.tech.NfcF
 import android.os.Bundle
-import android.os.Environment
 import android.os.Handler
 import android.support.v13.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -18,9 +17,9 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
 import android.widget.Toast
 import java.io.ByteArrayOutputStream
-import java.io.File
 import java.util.*
 import kotlin.concurrent.thread
+import com.oboenikui.campusfelica.ExecuteNfcF as ex
 
 
 class ScannerActivity : AppCompatActivity() {
@@ -87,24 +86,23 @@ class ScannerActivity : AppCompatActivity() {
                 nfcF.connect()
 
                 val idm = try {
-                    Arrays.copyOfRange(nfcF.transceive(ExecuteNfcF.POLLING_COMMAND), 2, 10)
+                    Arrays.copyOfRange(nfcF.transceive(ex.POLLING_COMMAND), 2, 10)
                 } catch (e: TagLostException) {
                     return@thread
                 }
 
                 val stream = ByteArrayOutputStream()
                 println(nfcF.maxTransceiveLength)
-                val blockList = ExecuteNfcF.createBlockList(3, 1)
-                stream.write(2 + idm.size + 5 + blockList.size)
+                val service = ex.createService(CampusFeliCa.SERVICE_CODE_INFORMATION, CampusFeliCa.SERVICE_CODE_BALANCE)
+                val block = ex.createBlock(3, 1)
+                stream.write(2 + idm.size + service.size + block.size)
                 stream.write(6)
                 stream.write(idm)
-
-                stream.write(2)
-                stream.write(CampusFeliCa.SERVICE_CODE_INFORMATION)
-                stream.write(CampusFeliCa.SERVICE_CODE_BALANCE)
-                stream.write(blockList)
+                stream.write(service)
+                stream.write(block)
                 val array = stream.toByteArray()
-                val result = ExecuteNfcF.bytesToText(nfcF.transceive(array))
+                stream.close()
+                val result = ex.bytesToText(nfcF.transceive(array))
                 handler.post {
                     textView.text = result
                 }
@@ -113,7 +111,7 @@ class ScannerActivity : AppCompatActivity() {
                     if (i % 100 == 0) {
                         println(i)
                     }
-                    val blockList = ExecuteNfcF.createBlockList(10)
+                    val blockList = ex.createBlock(10)
                     stream.write(2 + idm.size + 3 + blockList.size)
                     stream.write(6)
                     stream.write(idm)
@@ -128,7 +126,7 @@ class ScannerActivity : AppCompatActivity() {
                             first = response
                         } else {
                             handler.post {
-                                file.appendText("$i:${ExecuteNfcF.bytesToText(response ?: byteArrayOf())}\n")
+                                file.appendText("$i:${ex.bytesToText(response ?: byteArrayOf())}\n")
                             }
                         }
                         index = i
