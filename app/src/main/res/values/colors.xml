@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="activityBackground">#ffe0e0e0</color>
+    <color name="payment">#ed6d00</color>
+    <color name="charge">#009944</color>
+    <color name="warningBackground">#FFAA00</color>
+    <color name="colorPrimary">#21ade5</color>
+    <color name="colorPrimaryDark">#1986c2</color>
+    <color name="toolbarTitle">#ffffffff</color>
+</resources>

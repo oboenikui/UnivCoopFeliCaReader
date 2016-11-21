@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+	<string name="define_int_kotlin"></string>
+	<!-- Author section -->
+	<string name="library_kotlin_author">JetBrains</string>
+	<string name="library_kotlin_authorWebsite">http://jetbrains.com/</string>
+	<!-- Library section -->
+	<string name="library_kotlin_libraryName">Kotlin</string>
+	<string name="library_kotlin_libraryDescription">The Kotlin Programming Language</string>
+	<string name="library_kotlin_libraryWebsite">https://kotlinlang.org/</string>
+	<string name="library_kotlin_libraryVersion">1.0.5</string>
+	<!-- OpenSource section -->
+	<string name="library_kotlin_isOpenSource">true</string>
+	<string name="library_kotlin_repositoryLink"></string>
+	<!-- ClassPath for autoDetect section -->
+	<string name="library_kotlin_classPath"></string>
+	<!-- License section -->
+	<string name="library_kotlin_licenseId">apache_2_0</string>
+	<!-- Custom variables section -->
+</resources>
