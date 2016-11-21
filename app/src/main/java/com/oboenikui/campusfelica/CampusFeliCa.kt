@@ -34,11 +34,15 @@ class CampusFeliCa(private val mTag: Tag) {
     }
 
     fun readData(): Pair<CampusFeliCaInformation, List<CampusFeliCaHistory>>? {
-        ExecuteNfcF(mTag).use {
-            it.connect()
-            val info = readBasicInformation(it) ?: return null
-            val histories = readHistories(it)
-            return info to histories
+        try {
+            ExecuteNfcF(mTag).use {
+                it.connect()
+                val info = readBasicInformation(it) ?: return null
+                val histories = readHistories(it)
+                return info to histories
+            }
+        } catch(e: IOException) {
+            return null
         }
     }
 
@@ -47,14 +51,14 @@ class CampusFeliCa(private val mTag: Tag) {
             return null
         }
         val cal = Calendar.getInstance()
-        cal.set(toInt(result[31], result[32]),
-                toInt(result[33]) - 1,
-                toInt(result[34]))
+        cal.set(toInt((result[30].toInt()+0x20).toByte(), result[31]),
+                toInt(result[32]) - 1,
+                toInt(result[33]))
         return CampusFeliCaInformation(toIdString(result.copyOfRange(13,19)),
                 result[19] == 4.toByte(),
                 cal,
-                toInt(result[35], result[36], result[37]),
-                toInt(result[45], result[46], result[47], result[48])/10.0,
+                toInt(result[34], result[35], result[36]),
+                BigInteger(1, byteArrayOf(result[45], result[46], result[47], result[48])).toLong()/10.0,
                 BigInteger(1, byteArrayOf(result[64], result[63], result[62], result[61])).toLong())
     }
 
@@ -96,7 +100,7 @@ class CampusFeliCa(private val mTag: Tag) {
             var text = ""
             for (b in data) {
                 val hexString = String.format("%02X", b)
-                text += if (hexString.length == 2) hexString else "0" + hexString
+                text += hexString
             }
             return Integer.parseInt(text)
         }

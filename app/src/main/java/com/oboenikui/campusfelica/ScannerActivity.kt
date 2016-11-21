@@ -94,15 +94,14 @@ class ScannerActivity : AppCompatActivity() {
 
                 val stream = ByteArrayOutputStream()
                 println(nfcF.maxTransceiveLength)
-                val blockList = ExecuteNfcF.createBlockList(3, 1, 10)
-                stream.write(2 + idm.size + 7 + blockList.size)
+                val blockList = ExecuteNfcF.createBlockList(3, 1)
+                stream.write(2 + idm.size + 5 + blockList.size)
                 stream.write(6)
                 stream.write(idm)
 
-                stream.write(3)
+                stream.write(2)
                 stream.write(CampusFeliCa.SERVICE_CODE_INFORMATION)
                 stream.write(CampusFeliCa.SERVICE_CODE_BALANCE)
-                stream.write(CampusFeliCa.SERVICE_CODE_HISTORY)
                 stream.write(blockList)
                 val array = stream.toByteArray()
                 val result = ExecuteNfcF.bytesToText(nfcF.transceive(array))
