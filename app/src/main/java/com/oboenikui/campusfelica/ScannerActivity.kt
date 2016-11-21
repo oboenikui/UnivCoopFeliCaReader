@@ -91,7 +91,6 @@ class ScannerActivity : AppCompatActivity() {
                 } catch (e: TagLostException) {
                     return@thread
                 }
-                var first: ByteArray = byteArrayOf()
 
                 val stream = ByteArrayOutputStream()
                 println(nfcF.maxTransceiveLength)

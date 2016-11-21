@@ -285,6 +285,9 @@ open class NfcActivity : AppCompatActivity() {
 
                     if (position === itemCount - 1)
                         (viewHolder.cardView.layoutParams as? ViewGroup.MarginLayoutParams)?.let { it.setMargins(it.leftMargin, it.topMargin, it.rightMargin, it.bottomMargin * 2) }
+
+                    if (position === 0)
+                        (viewHolder.cardView.layoutParams as? ViewGroup.MarginLayoutParams)?.let { it.setMargins(it.leftMargin, it.topMargin * 2, it.rightMargin, it.bottomMargin) }
                 }
 
                 is ErrorViewHolder -> {
