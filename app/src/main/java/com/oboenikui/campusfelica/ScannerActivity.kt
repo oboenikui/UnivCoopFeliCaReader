@@ -93,7 +93,7 @@ class ScannerActivity : AppCompatActivity() {
 
                 val stream = ByteArrayOutputStream()
                 println(nfcF.maxTransceiveLength)
-                val service = ex.createService(CampusFeliCa.SERVICE_CODE_INFORMATION, CampusFeliCa.SERVICE_CODE_BALANCE)
+                val service = ex.createService(CampusFeliCa.SERVICE_CODE_MEMBER_INFORMATION, CampusFeliCa.SERVICE_CODE_MONEY_INFORMATION)
                 val block = ex.createBlock(3, 1)
                 stream.write(2 + idm.size + service.size + block.size)
                 stream.write(6)

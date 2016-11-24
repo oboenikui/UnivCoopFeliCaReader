@@ -1,21 +1,26 @@
 package com.oboenikui.campusfelica
 
+import android.app.ActivityManager.TaskDescription
 import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.nfc.tech.NfcF
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.AppBarLayout
+import android.support.design.widget.CollapsingToolbarLayout
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.view.MenuItemCompat
+import android.support.v4.view.ViewCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -28,26 +33,11 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
+import com.mikepenz.aboutlibraries.Libs
+import com.mikepenz.aboutlibraries.LibsBuilder
 import com.oboenikui.campusfelica.CampusFeliCa.CampusFeliCaHistory
 import java.text.SimpleDateFormat
 import java.util.*
-import android.support.design.widget.CollapsingToolbarLayout
-import android.support.design.widget.CoordinatorLayout
-import android.support.v4.view.ViewCompat
-import android.os.Build.VERSION.SDK_INT
-import android.os.Build.VERSION
-import android.os.Build
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-import com.mikepenz.aboutlibraries.Libs
-import com.mikepenz.aboutlibraries.LibsBuilder
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.app.ActivityManager.TaskDescription
-
-
 
 
 open class NfcActivity : AppCompatActivity() {
@@ -238,7 +228,7 @@ open class NfcActivity : AppCompatActivity() {
 
             val mealUsedText = findViewById(R.id.meal_used) as TextView
 
-            if(System.currentTimeMillis() - info.lastMealDate.timeInMillis < 30L * 24 * 60 * 60 * 1000 ) {
+            if(info.isMealUser && System.currentTimeMillis() - info.lastMealDate.timeInMillis < 30L * 24 * 60 * 60 * 1000 ) {
                 mealUsedText.text = getString(R.string.meal_card_format).format(toPriceText(info.mealUsed.toLong()))
             } else {
                 mealUsedText.visibility = View.GONE
